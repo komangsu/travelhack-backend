@@ -1,10 +1,7 @@
 package controllers
 
 import (
-	"github.com/disintegration/imaging"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/google/uuid"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -16,6 +13,11 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/disintegration/imaging"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/google/uuid"
 )
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 4 // 4 MB
@@ -234,8 +236,24 @@ func ConfirmEmail(c *gin.Context) {
 
 func Cookie(c *gin.Context) {
 	// c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("cookie", "testingcookie", 900, "/", "localhost", true, true)
+	cookie := &http.Cookie{}
+	cookie.Name = "tes"
+	cookie.Value = "ini cookie"
+	cookie.MaxAge = 900
+	cookie.Path = "/create-cookie"
+	cookie.Domain = "localhost"
+	cookie.Secure = true
+	cookie.HttpOnly = false
 
+	http.SetCookie(c.Writer, cookie)
+
+	co, _ := c.Cookie("tes")
+	log.Println("cookie --->", co)
+
+}
+
+func DeleteCookie(c *gin.Context) {
+	c.SetCookie("tes", "ini cookie", -1, "/create-cookie", "localhost", true, false)
 }
 
 func ResendIsExpired(resend_expired int64) bool {

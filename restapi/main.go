@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gobeam/custom-validator"
 	"net/http"
 	"restapi/controllers"
+
+	"github.com/gin-gonic/gin"
+	validator "github.com/gobeam/custom-validator"
 )
 
 func main() {
@@ -35,6 +36,7 @@ func main() {
 	router.POST("/resend-email", controllers.ResendEmail)
 
 	router.GET("/create-cookie", controllers.Cookie)
+	router.GET("/delete-cookie", controllers.DeleteCookie)
 
 	router.Run()
 }
