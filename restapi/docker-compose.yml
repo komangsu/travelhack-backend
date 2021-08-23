@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ".:/api"
+    ports:
+      - "0.0.0.0:3000:3000"
+    depends_on: 
+      - postgres
+      - pgadmin4
+      - redis-server
+  postgres:
+    image: "postgres"
+    restart: always
+    environment: 
+      - TZ=Asia/Kuala_Lumpur
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "0.0.0.0:7557:5432"
+  pgadmin4:
+    image: "dpage/pgadmin4"
+    ports: 
+      - "0.0.0.0:5437:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+  redis-server:
+    image: "redis"
+    sysctls:
+      - net.core.somaxconn=511

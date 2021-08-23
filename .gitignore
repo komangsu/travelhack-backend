@@ -1,0 +1,4 @@
+# env files
+.env
+# gin files
+gin-bin

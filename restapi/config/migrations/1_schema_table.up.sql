@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS users(
+  id serial PRIMARY KEY,
+  username VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(100) NULL,
+  phone VARCHAR(20) NULL UNIQUE,
+  language VARCHAR(100) NULL,
+  region VARCHAR(100) NULL,
+  avatar VARCHAR(100) DEFAULT 'default.png',
+  role VARCHAR(10) DEFAULT 'guest',
+	image TEXT NULL,
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT Now(),
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT Now()
+);
+
+CREATE TABLE IF NOT EXISTS confirmation_users(
+	id VARCHAR(100) PRIMARY KEY,
+	activated BOOLEAN DEFAULT FALSE,
+	resend_expired INTEGER NULL,
+	user_id INT NOT NULL,
+	CONSTRAINT fk_users
+		FOREIGN KEY(user_id)
+			REFERENCES users(id)
+			ON DELETE CASCADE
+			ON UPDATE CASCADE
+);
